@@ -72,3 +72,20 @@ func GetRatingById(id uuid.UUID) (*models.Rating, error) {
 	}
 	return &rating, err
 }
+
+func UpdateRating(rating *models.Rating) error {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		logrus.Errorf("Erreur lors de l'ouverture de la base de données : %s", err.Error())
+		return err
+	}
+	defer helpers.CloseDB(db)
+	_, err = db.Exec("UPDATE ratings SET music_id=?, user_id=?, content=?, rating=? WHERE id=?",
+		rating.MusicID, rating.UserID, rating.Content, rating.Rating, rating.ID)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la mise à jour du rating dans la base de données : %s", err.Error())
+		return err
+	}
+
+	return nil
+}

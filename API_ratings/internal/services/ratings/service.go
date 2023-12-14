@@ -54,3 +54,25 @@ func GetRatingById(id uuid.UUID) (*models.Rating, error) {
 
 	return rating, err
 }
+
+func UpdateRating(ratingID uuid.UUID, updatedRating models.Rating) error {
+	rating, err := repository.GetRatingById(ratingID)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la récupération du rating : %s", err.Error())
+		return err
+	}
+
+	// Mettre à jour les champs nécessaires du commentaire récupéré avec les données du commentaire mis à jour
+	rating.MusicID = updatedRating.MusicID
+	rating.UserID = updatedRating.UserID
+	rating.Content = updatedRating.Content
+	rating.Rating = updatedRating.Rating
+
+	err = repository.UpdateRating(rating)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la mise à jour du rating en base de données : %s", err.Error())
+		return err
+	}
+
+	return nil
+}
