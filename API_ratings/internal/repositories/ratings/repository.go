@@ -4,6 +4,7 @@ import (
 	"Projet_Middleware/internal/helpers"
 	"Projet_Middleware/internal/models"
 
+	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
 )
 
@@ -51,4 +52,23 @@ func GetAllRatings() ([]models.Rating, error) {
 	_ = rows.Close()
 
 	return ratings, err
+}
+
+func GetRatingById(id uuid.UUID) (*models.Rating, error) {
+	db, err := helpers.OpenDB()
+	if err != nil {
+
+		return nil, err
+	}
+	row := db.QueryRow("SELECT * FROM ratings WHERE id=?", id)
+	helpers.CloseDB(db)
+
+	var rating models.Rating
+	err = row.Scan(&rating.ID, &rating.MusicID, &rating.UserID, &rating.Content, &rating.Rating)
+
+	if err != nil {
+
+		return nil, err // Autres erreurs lors du scan
+	}
+	return &rating, err
 }

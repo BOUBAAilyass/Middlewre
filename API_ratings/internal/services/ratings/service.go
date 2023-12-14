@@ -3,7 +3,11 @@ package ratings
 import (
 	"Projet_Middleware/internal/models"
 	repository "Projet_Middleware/internal/repositories/ratings"
+	"database/sql"
+	"errors"
+	"net/http"
 
+	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
 )
 
@@ -30,4 +34,23 @@ func GetAllRatings() ([]models.Rating, error) {
 	}
 
 	return ratings, nil
+}
+
+func GetRatingById(id uuid.UUID) (*models.Rating, error) {
+	rating, err := repository.GetRatingById(id)
+	if err != nil {
+		if errors.As(err, &sql.ErrNoRows) {
+			return nil, &models.CustomError{
+				Message: "rating not found",
+				Code:    http.StatusNotFound,
+			}
+		}
+		logrus.Errorf("error retrieving rating : %s", err.Error())
+		return nil, &models.CustomError{
+			Message: "Something went wrong",
+			Code:    500,
+		}
+	}
+
+	return rating, err
 }
