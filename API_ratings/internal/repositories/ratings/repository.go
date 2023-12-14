@@ -26,3 +26,29 @@ func CreateRating(rating models.Rating) error {
 
 	return nil
 }
+
+func GetAllRatings() ([]models.Rating, error) {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		return nil, err
+	}
+	rows, err := db.Query("SELECT * FROM ratings")
+	helpers.CloseDB(db)
+	if err != nil {
+		return nil, err
+	}
+
+	ratings := []models.Rating{}
+	for rows.Next() {
+		var data models.Rating
+		err = rows.Scan(&data.ID, &data.MusicID, &data.UserID, &data.Content, &data.Rating)
+		if err != nil {
+			return nil, err
+		}
+		ratings = append(ratings, data)
+	}
+
+	_ = rows.Close()
+
+	return ratings, err
+}
