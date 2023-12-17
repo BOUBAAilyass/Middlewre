@@ -4,6 +4,7 @@ import (
 	"Projet_Middleware/internal/helpers"
 	"Projet_Middleware/internal/models"
 
+	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
 )
 
@@ -49,4 +50,23 @@ func GetAllUsers() ([]models.User, error) {
 	_ = rows.Close()
 
 	return users, err
+}
+
+func GetUserById(id uuid.UUID) (*models.User, error) {
+	db, err := helpers.OpenDB()
+	if err != nil {
+
+		return nil, err
+	}
+	row := db.QueryRow("SELECT * FROM users WHERE id=?", id)
+	helpers.CloseDB(db)
+
+	var user models.User
+	err = row.Scan(&user.ID, &user.Name, &user.Email, &user.Password)
+
+	if err != nil {
+
+		return nil, err // Autres erreurs lors du scan
+	}
+	return &user, err
 }
