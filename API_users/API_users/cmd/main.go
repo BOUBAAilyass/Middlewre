@@ -15,6 +15,7 @@ func main() {
 	router := chi.NewRouter()
 	// users------------------------------------------------------------------------------------------------------------------
 	router.Post("/users", users.InsertUser)
+	router.Get("/users", users.GetUsers)
 
 	logrus.Info("[INFO] Web server started. Now listening on *:8084")
 	logrus.Fatalln(http.ListenAndServe(":8084", router))

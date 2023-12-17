@@ -15,3 +15,19 @@ func CreateUser(user models.User) error {
 	}
 	return nil
 }
+
+func GetAllUsers() ([]models.User, error) {
+	var err error
+	// calling repository
+	users, err := repository.GetAllUsers()
+	// managing errors
+	if err != nil {
+		logrus.Errorf("error retrieving collections : %s", err.Error())
+		return nil, &models.CustomError{
+			Message: "Something went wrong",
+			Code:    500,
+		}
+	}
+
+	return users, nil
+}
