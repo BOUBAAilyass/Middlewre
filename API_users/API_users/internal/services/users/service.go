@@ -75,3 +75,13 @@ func UpdateUser(userID uuid.UUID, updatedUser models.User) error {
 
 	return nil
 }
+
+func DeleteUser(userID uuid.UUID) error {
+	err := repository.DeleteUser(userID)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la suppression du commentaire : %s", err.Error())
+		return err
+	}
+
+	return nil
+}
