@@ -3,7 +3,7 @@ package songs
 import (
 	"Projet_Middleware/internal/helpers"
 	"Projet_Middleware/internal/models"
-
+	"github.com/gofrs/uuid"
 	
 	"github.com/sirupsen/logrus"
 )
@@ -51,3 +51,23 @@ func GetAllSongs() ([]models.Song, error) {
 
 	return songs, err
 }
+
+func GetSongById(id uuid.UUID) (*models.Song, error) {
+	db, err := helpers.OpenDB()
+	if err != nil {
+
+		return nil, err
+	}
+	row := db.QueryRow("SELECT * FROM songs WHERE id=?", id)
+	helpers.CloseDB(db)
+
+	var song models.Song
+	err = row.Scan(&song.ID, &song.Title, &song.Artist, &song.Album, &song.Year, &song.Path)
+
+	if err != nil {
+
+		return nil, err // Autres erreurs lors du scan
+	}
+	return &song, err
+}
+
