@@ -18,3 +18,18 @@ func CreateSong(song models.Song) error {
 	return nil
 }
 
+func GetAllSongs() ([]models.Song, error) {
+	var err error
+	// calling repository
+	songs, err := repository.GetAllSongs()
+	// managing errors
+	if err != nil {
+		logrus.Errorf("error retrieving collections : %s", err.Error())
+		return nil, &models.CustomError{
+			Message: "Something went wrong",
+			Code:    500,
+		}
+	}
+
+	return songs, nil
+}
