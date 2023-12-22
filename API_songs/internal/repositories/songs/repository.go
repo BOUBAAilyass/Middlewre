@@ -71,3 +71,20 @@ func GetSongById(id uuid.UUID) (*models.Song, error) {
 	return &song, err
 }
 
+func UpdateSong(song *models.Song) error {
+	db, err := helpers.OpenDB()
+	if err != nil {
+		logrus.Errorf("Erreur lors de l'ouverture de la base de données : %s", err.Error())
+		return err
+	}
+	defer helpers.CloseDB(db)
+	_, err = db.Exec("UPDATE songs SET title=?, artist=?, album=?, year=?, path=? WHERE id=?",
+		song.Title, song.Artist, song.Album, song.Year, song.Path, song.ID)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la mise à jour du song dans la base de données : %s", err.Error())
+		return err
+	}
+
+	return nil
+}
+

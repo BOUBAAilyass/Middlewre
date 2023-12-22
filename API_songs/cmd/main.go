@@ -17,6 +17,7 @@ func main() {
 	router.Post("/songs", songs.InsertSong)
 	router.Get("/songs", songs.GetSongs)
 	router.Get("/songs/{id}", songs.GetSong)
+	router.Put("/songs/{id}", songs.UpdateSong)
 	logrus.Info("[INFO] Web server started. Now listening on *:8084")
 	logrus.Fatalln(http.ListenAndServe(":8084", router))
 
