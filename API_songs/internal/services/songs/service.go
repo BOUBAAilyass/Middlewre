@@ -77,3 +77,13 @@ func UpdateSong(songID uuid.UUID, updatedSong models.Song) error {
 
 	return nil
 }
+
+func DeleteSong(songID uuid.UUID) error {
+	err := repository.DeleteSong(songID)
+	if err != nil {
+		logrus.Errorf("Erreur lors de la suppression du commentaire : %s", err.Error())
+		return err
+	}
+
+	return nil
+}
