@@ -3,13 +3,13 @@ package songs
 import (
 	"Projet_Middleware/internal/models"
 	repository "Projet_Middleware/internal/repositories/songs"
-	
 
-	"github.com/gofrs/uuid"
-	"github.com/sirupsen/logrus"
 	"database/sql"
 	"errors"
 	"net/http"
+
+	"github.com/gofrs/uuid"
+	"github.com/sirupsen/logrus"
 )
 
 func CreateSong(song models.Song) error {
@@ -63,11 +63,15 @@ func UpdateSong(songID uuid.UUID, updatedSong models.Song) error {
 	}
 
 	// Mettre à jour les champs nécessaires du commentaire récupéré avec les données du commentaire mis à jour
-	song.Title = updatedSong.Title
-	song.Artist = updatedSong.Artist
-	song.Album = updatedSong.Album
-	song.Year = updatedSong.Year
-	song.Path = updatedSong.Path
+	if updatedSong.Title != "" {
+		song.Title = updatedSong.Title
+	}
+	if updatedSong.Artist != "" {
+		song.Artist = updatedSong.Artist
+	}
+	if updatedSong.FileName != "" {
+		song.FileName = updatedSong.FileName
+	}
 
 	err = repository.UpdateSong(song)
 	if err != nil {

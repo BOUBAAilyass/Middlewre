@@ -37,9 +37,10 @@ func init() {
 			id UUID PRIMARY KEY,
 			title VARCHAR(255) NOT NULL,
 			artist VARCHAR(255) NOT NULL,
-			album VARCHAR(255) NOT NULL,
-			year INT NOT NULL,
-			path VARCHAR(255) NOT NULL
+			file_name VARCHAR(255) NOT NULL,
+			published_date DATE NOT NULL
+
+			
 			
 		);`,
 	}

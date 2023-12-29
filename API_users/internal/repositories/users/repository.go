@@ -16,8 +16,8 @@ func CreateUser(user models.User) error {
 	}
 	defer helpers.CloseDB(db)
 
-	_, err = db.Exec("INSERT INTO users ( id ,name, email, password) VALUES (?, ?, ?, ?)",
-		user.ID, user.Name, user.Email, user.Password)
+	_, err = db.Exec("INSERT INTO users ( id ,name, username, inscription_date) VALUES (?, ?, ?, ?)",
+		user.ID, user.Name, user.Username, user.InscriptionDate)
 	if err != nil {
 		logrus.Errorf("Erreur lors de l'insertion du user dans la base de données : %s", err.Error())
 		return err
@@ -40,7 +40,7 @@ func GetAllUsers() ([]models.User, error) {
 	users := []models.User{}
 	for rows.Next() {
 		var data models.User
-		err = rows.Scan(&data.ID, &data.Name, &data.Email, &data.Password)
+		err = rows.Scan(&data.ID, &data.Name, &data.Username, &data.InscriptionDate)
 		if err != nil {
 			return nil, err
 		}
@@ -62,7 +62,7 @@ func GetUserById(id uuid.UUID) (*models.User, error) {
 	helpers.CloseDB(db)
 
 	var user models.User
-	err = row.Scan(&user.ID, &user.Name, &user.Email, &user.Password)
+	err = row.Scan(&user.ID, &user.Name, &user.Username, &user.InscriptionDate)
 
 	if err != nil {
 
@@ -78,8 +78,8 @@ func UpdateUser(user *models.User) error {
 		return err
 	}
 	defer helpers.CloseDB(db)
-	_, err = db.Exec("UPDATE users SET name=?, email=?, password=? WHERE id=?",
-		user.Name, user.Email, user.Password, user.ID)
+	_, err = db.Exec("UPDATE users SET name=?, username=?  WHERE id=?",
+		user.Name, user.Username, user.ID)
 	if err != nil {
 		logrus.Errorf("Erreur lors de la mise à jour du user dans la base de données : %s", err.Error())
 		return err

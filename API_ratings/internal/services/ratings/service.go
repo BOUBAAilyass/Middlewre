@@ -63,10 +63,13 @@ func UpdateRating(ratingID uuid.UUID, updatedRating models.Rating) error {
 	}
 
 	// Mettre à jour les champs nécessaires du commentaire récupéré avec les données du commentaire mis à jour
-	rating.MusicID = updatedRating.MusicID
-	rating.UserID = updatedRating.UserID
-	rating.Content = updatedRating.Content
-	rating.Rating = updatedRating.Rating
+
+	if updatedRating.Content != "" {
+		rating.Content = updatedRating.Content
+	}
+	if updatedRating.Rating != 0 {
+		rating.Rating = updatedRating.Rating
+	}
 
 	err = repository.UpdateRating(rating)
 	if err != nil {

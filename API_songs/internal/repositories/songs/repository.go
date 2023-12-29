@@ -3,8 +3,9 @@ package songs
 import (
 	"Projet_Middleware/internal/helpers"
 	"Projet_Middleware/internal/models"
+
 	"github.com/gofrs/uuid"
-	
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -16,8 +17,8 @@ func CreateSong(song models.Song) error {
 	}
 	defer helpers.CloseDB(db)
 
-	_, err = db.Exec("INSERT INTO songs ( id ,title, artist, album, year, path) VALUES (?, ?, ?, ?, ?, ?)",
-		song.ID, song.Title, song.Artist, song.Album, song.Year, song.Path)
+	_, err = db.Exec("INSERT INTO songs ( id ,title, artist, file_name, published_date) VALUES (?, ?, ?, ?, ?)",
+		song.ID, song.Title, song.Artist, song.FileName, song.PublishedDate)
 	if err != nil {
 		logrus.Errorf("Erreur lors de l'insertion du song dans la base de données : %s", err.Error())
 		return err
@@ -40,7 +41,7 @@ func GetAllSongs() ([]models.Song, error) {
 	songs := []models.Song{}
 	for rows.Next() {
 		var data models.Song
-		err = rows.Scan(&data.ID, &data.Title, &data.Artist, &data.Album, &data.Year, &data.Path)
+		err = rows.Scan(&data.ID, &data.Title, &data.Artist, &data.FileName, &data.PublishedDate)
 		if err != nil {
 			return nil, err
 		}
@@ -62,7 +63,7 @@ func GetSongById(id uuid.UUID) (*models.Song, error) {
 	helpers.CloseDB(db)
 
 	var song models.Song
-	err = row.Scan(&song.ID, &song.Title, &song.Artist, &song.Album, &song.Year, &song.Path)
+	err = row.Scan(&song.ID, &song.Title, &song.Artist, &song.FileName, &song.PublishedDate)
 
 	if err != nil {
 
@@ -78,8 +79,8 @@ func UpdateSong(song *models.Song) error {
 		return err
 	}
 	defer helpers.CloseDB(db)
-	_, err = db.Exec("UPDATE songs SET title=?, artist=?, album=?, year=?, path=? WHERE id=?",
-		song.Title, song.Artist, song.Album, song.Year, song.Path, song.ID)
+	_, err = db.Exec("UPDATE songs SET title=?, artist=?, file_name=? WHERE id=?",
+		song.Title, song.Artist, song.FileName, song.ID)
 	if err != nil {
 		logrus.Errorf("Erreur lors de la mise à jour du song dans la base de données : %s", err.Error())
 		return err

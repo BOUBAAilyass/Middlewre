@@ -35,9 +35,10 @@ func init() {
 	rating_schemes := []string{
 		`CREATE TABLE IF NOT EXISTS ratings (
             id UUID PRIMARY KEY,
-            music_id INTEGER NOT NULL,
-            user_id INTEGER NOT NULL,
+            music_id UUID NOT NULL,
+            user_id UUID NOT NULL,
             content TEXT NOT NULL,
+			rating_date DATE NOT NULL,
 			rating REAL CHECK (rating BETWEEN 0 AND 5)
 		
             
