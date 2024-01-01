@@ -20,8 +20,8 @@ func main() {
 	router.Put("/users/{id}", users.UpdateUser)
 	router.Delete("/users/{id}", users.DeleteUser)
 
-	logrus.Info("[INFO] Web server started. Now listening on *:8084")
-	logrus.Fatalln(http.ListenAndServe(":8084", router))
+	logrus.Info("[INFO] Web server started. Now listening on *:8082")
+	logrus.Fatalln(http.ListenAndServe(":8082", router))
 
 }
 
@@ -37,8 +37,8 @@ func init() {
 		`CREATE TABLE IF NOT EXISTS users (
 			id UUID PRIMARY KEY,
 			name VARCHAR(255) NOT NULL,
-			email VARCHAR(255) NOT NULL,
-			password VARCHAR(255) NOT NULL
+			username VARCHAR(255) NOT NULL,
+			inscription_date DATE NOT NULL
 			
 		);`,
 	}

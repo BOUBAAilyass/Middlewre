@@ -1,6 +1,7 @@
 package users
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gofrs/uuid"
@@ -26,6 +27,6 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
+	fmt.Println(http.StatusNoContent)
 	w.WriteHeader(http.StatusNoContent)
 }

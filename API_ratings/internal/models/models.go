@@ -6,8 +6,9 @@ import (
 
 type Rating struct {
 	ID      *uuid.UUID `json:"id"`
-	MusicID int        `json:"music_id"`
-	UserID  int        `json:"user_id"`
+	MusicID *uuid.UUID `json:"music_id"`
+	UserID  *uuid.UUID `json:"user_id"`
 	Content string     `json:"content"`
+	Date    string     `json:"date"`
 	Rating  float64    `json:"rating"`
 }

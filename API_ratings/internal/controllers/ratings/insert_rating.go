@@ -3,6 +3,7 @@ package ratings
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
@@ -19,6 +20,7 @@ func InsertRating(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
 	// Générer un nouvel ID UUID
 	id, err := uuid.NewV4()
 	if err != nil {
@@ -26,6 +28,9 @@ func InsertRating(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	// la date est générée automatiquement par la base de données
+	newRating.Date = time.Now().Format("2006-01-02 15:04")
 
 	// Affecter l'ID généré au commentaire
 	newRating.ID = &id

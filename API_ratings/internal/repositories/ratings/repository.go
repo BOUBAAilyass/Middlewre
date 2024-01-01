@@ -3,6 +3,7 @@ package ratings
 import (
 	"Projet_Middleware/internal/helpers"
 	"Projet_Middleware/internal/models"
+	"fmt"
 
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
@@ -18,8 +19,8 @@ func CreateRating(rating models.Rating) error {
 	if _, e := db.Exec("PRAGMA foreign_keys = ON;"); e != nil {
 		logrus.Fatalln("Could not enable foreign keys ! Error was : " + e.Error())
 	}
-	_, err = db.Exec("INSERT INTO ratings ( id ,music_id, user_id, content, rating ) VALUES (?, ?, ?, ?, ?)",
-		rating.ID, rating.MusicID, rating.UserID, rating.Content, rating.Rating)
+	_, err = db.Exec("INSERT INTO ratings ( id ,music_id, user_id, content, rating_date, rating ) VALUES (?, ?, ?, ?, ?, ?)",
+		rating.ID, rating.MusicID, rating.UserID, rating.Content, rating.Date, rating.Rating)
 	if err != nil {
 		logrus.Errorf("Erreur lors de l'insertion du rating dans la base de données : %s", err.Error())
 		return err
@@ -59,7 +60,9 @@ func GetAllRatings() ([]models.Rating, error) {
 	ratings := []models.Rating{}
 	for rows.Next() {
 		var data models.Rating
-		err = rows.Scan(&data.ID, &data.MusicID, &data.UserID, &data.Content, &data.Rating)
+
+		err = rows.Scan(&data.ID, &data.MusicID, &data.UserID, &data.Content, &data.Date, &data.Rating)
+		fmt.Println(data)
 		if err != nil {
 			return nil, err
 		}
@@ -81,8 +84,7 @@ func GetRatingById(id uuid.UUID) (*models.Rating, error) {
 	helpers.CloseDB(db)
 
 	var rating models.Rating
-	err = row.Scan(&rating.ID, &rating.MusicID, &rating.UserID, &rating.Content, &rating.Rating)
-
+	err = row.Scan(&rating.ID, &rating.MusicID, &rating.UserID, &rating.Content, &rating.Date, &rating.Rating)
 	if err != nil {
 
 		return nil, err // Autres erreurs lors du scan

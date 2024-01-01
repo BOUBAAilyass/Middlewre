@@ -5,10 +5,9 @@ import (
 )
 
 type Song struct {
-	ID     *uuid.UUID `json:"id"`
-	Title  string     `json:"title"`
-	Artist string     `json:"artist"`
-	Album  string     `json:"album"`
-	Year   int        `json:"year"`
-	Path   string     `json:"path"`
+	ID            *uuid.UUID `json:"id"`
+	Title         string     `json:"title"`
+	Artist        string     `json:"artist"`
+	FileName      string     `json:"filename"`
+	PublishedDate string     `json:"published"`
 }

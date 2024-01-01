@@ -3,6 +3,7 @@ package users
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
@@ -29,7 +30,7 @@ func InsertUser(w http.ResponseWriter, r *http.Request) {
 
 	// Affecter l'ID généré au commentaire
 	newUser.ID = &id
-
+	newUser.InscriptionDate = time.Now().Format("2006-01-02 15:04")
 	err = users.CreateUser(newUser)
 	if err != nil {
 		logrus.Errorf("Erreur lors de la création du User : %s", err.Error())
