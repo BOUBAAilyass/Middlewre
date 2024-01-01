@@ -3,6 +3,7 @@ package ratings
 import (
 	"Projet_Middleware/internal/helpers"
 	"Projet_Middleware/internal/models"
+	"fmt"
 
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
@@ -59,7 +60,9 @@ func GetAllRatings() ([]models.Rating, error) {
 	ratings := []models.Rating{}
 	for rows.Next() {
 		var data models.Rating
+
 		err = rows.Scan(&data.ID, &data.MusicID, &data.UserID, &data.Content, &data.Date, &data.Rating)
+		fmt.Println(data)
 		if err != nil {
 			return nil, err
 		}

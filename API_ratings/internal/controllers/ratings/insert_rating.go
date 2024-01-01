@@ -20,6 +20,7 @@ func InsertRating(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
 	// Générer un nouvel ID UUID
 	id, err := uuid.NewV4()
 	if err != nil {

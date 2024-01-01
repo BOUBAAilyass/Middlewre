@@ -20,8 +20,8 @@ func main() {
 	router.Put("/users/{id}", users.UpdateUser)
 	router.Delete("/users/{id}", users.DeleteUser)
 
-	logrus.Info("[INFO] Web server started. Now listening on *:8084")
-	logrus.Fatalln(http.ListenAndServe(":8084", router))
+	logrus.Info("[INFO] Web server started. Now listening on *:8082")
+	logrus.Fatalln(http.ListenAndServe(":8082", router))
 
 }
 
