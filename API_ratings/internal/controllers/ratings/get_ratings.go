@@ -9,7 +9,14 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func GetRatings(w http.ResponseWriter, _ *http.Request) {
+func GetRatings(w http.ResponseWriter, r *http.Request) {
+
+	/* 	MusicID, err := uuid.FromString(chi.URLParam(r, "songId"))
+	   	if err != nil {
+	   		logrus.Errorf("error : %s", err.Error())
+	   		w.WriteHeader(http.StatusBadRequest)
+	   		return
+	   	} */
 	// calling service
 	ratings, err := ratings.GetAllRatings()
 	if err != nil {

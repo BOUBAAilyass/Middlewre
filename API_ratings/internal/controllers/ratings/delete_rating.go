@@ -14,6 +14,7 @@ import (
 func DeleteRating(w http.ResponseWriter, r *http.Request) {
 
 	ratingID, err := uuid.FromString(chi.URLParam(r, "id"))
+
 	if err != nil {
 		logrus.Errorf("Erreur lors de la récupération de l'ID du rating : %s", err.Error())
 		w.WriteHeader(http.StatusBadRequest)
@@ -28,4 +29,5 @@ func DeleteRating(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+
 }

@@ -3,7 +3,6 @@ package ratings
 import (
 	"Projet_Middleware/internal/helpers"
 	"Projet_Middleware/internal/models"
-	"fmt"
 
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
@@ -51,7 +50,7 @@ func GetAllRatings() ([]models.Rating, error) {
 	if err != nil {
 		return nil, err
 	}
-	rows, err := db.Query("SELECT * FROM ratings")
+	rows, err := db.Query("SELECT * FROM ratings ")
 	helpers.CloseDB(db)
 	if err != nil {
 		return nil, err
@@ -62,7 +61,7 @@ func GetAllRatings() ([]models.Rating, error) {
 		var data models.Rating
 
 		err = rows.Scan(&data.ID, &data.MusicID, &data.UserID, &data.Content, &data.Date, &data.Rating)
-		fmt.Println(data)
+
 		if err != nil {
 			return nil, err
 		}
@@ -99,6 +98,7 @@ func UpdateRating(rating *models.Rating) error {
 		return err
 	}
 	defer helpers.CloseDB(db)
+
 	_, err = db.Exec("UPDATE ratings SET music_id=?, user_id=?, content=?, rating=? WHERE id=?",
 		rating.MusicID, rating.UserID, rating.Content, rating.Rating, rating.ID)
 	if err != nil {

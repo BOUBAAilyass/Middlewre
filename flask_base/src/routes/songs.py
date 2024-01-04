@@ -144,6 +144,7 @@ def put_song(id):
       tags:
           - songs
     """
+    print(request.json, "request.json")
     return songs_service.update_song(id, request.json)
 
 @songs.route('/<id>', methods=['DELETE'])

@@ -29,7 +29,7 @@ def create_rating(rating_register):
     # on crée la chonson côté API ratings
     response = requests.request(method="POST", url=ratings_url, json=rating_schema)
      
-    print(response.json())
+
 
     if response.status_code != 201:
         return response.json(), response.status_code
@@ -56,12 +56,11 @@ def update_rating(id, rating_update):
     
     # s'il y a quelque chose à changer côté API 
     rating_schema = RatingSchema().loads(json.dumps(rating_update), unknown=EXCLUDE)
-    print(rating_schema)
+
     response = None
     if not RatingSchema.is_empty(rating_schema):
         # on lance la requête de modification
         response = requests.request(method="PUT", url=ratings_url+"/"+id, json=rating_schema)
-        print(response.status_code)
         if response.status_code != 200:
             return response.json(), response.status_code
 

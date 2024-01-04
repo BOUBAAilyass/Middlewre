@@ -63,15 +63,12 @@ func UpdateSong(songID uuid.UUID, updatedSong models.Song) error {
 	}
 
 	// Mettre à jour les champs nécessaires du commentaire récupéré avec les données du commentaire mis à jour
-	if updatedSong.Title != "" {
-		song.Title = updatedSong.Title
-	}
-	if updatedSong.Artist != "" {
-		song.Artist = updatedSong.Artist
-	}
-	if updatedSong.FileName != "" {
-		song.FileName = updatedSong.FileName
-	}
+
+	song.Title = updatedSong.Title
+
+	song.Artist = updatedSong.Artist
+
+	song.FileName = updatedSong.FileName
 
 	err = repository.UpdateSong(song)
 	if err != nil {

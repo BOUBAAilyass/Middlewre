@@ -49,12 +49,11 @@ def post_rating():
       tags:
           - ratings
     """
-    print(request.json, "request.json")
+    print( "request.json")
     return ratings_service.create_rating(request.json)
 
 @ratings.route('/<id>', methods=['GET'])
 @login_required
-
 def get_rating(id):
 
     """
@@ -146,7 +145,8 @@ def put_rating(id):
       tags:
           - ratings
     """
-
+    print( "request.json")
+    print(request.json)
     return ratings_service.update_rating(id, request.json)
 
 @ratings.route('/<id>', methods=['DELETE'])

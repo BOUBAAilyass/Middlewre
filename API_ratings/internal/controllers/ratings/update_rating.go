@@ -2,6 +2,7 @@ package ratings
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gofrs/uuid"
@@ -29,7 +30,7 @@ func UpdateRating(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
+	fmt.Println(updatedRating)
 	err = ratings.UpdateRating(ratingID, updatedRating)
 	if err != nil {
 		logrus.Errorf("Erreur lors de la mise à jour du rating : %s", err.Error())
