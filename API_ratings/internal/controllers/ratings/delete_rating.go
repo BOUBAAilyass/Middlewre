@@ -3,12 +3,11 @@ package ratings
 import (
 	"net/http"
 
-	"github.com/gofrs/uuid"
-	"github.com/sirupsen/logrus"
-
 	"Projet_Middleware/internal/services/ratings"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/gofrs/uuid"
+	"github.com/sirupsen/logrus"
 )
 
 func DeleteRating(w http.ResponseWriter, r *http.Request) {

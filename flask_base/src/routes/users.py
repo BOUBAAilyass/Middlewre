@@ -8,10 +8,10 @@ from schemas.user import UserUpdateSchema
 from schemas.errors import *
 import services.users as users_service
 
-# from routes import users
+
 users = Blueprint(name="users", import_name=__name__)
 
-
+# get user
 @users.route('/<id>', methods=['GET'])
 @login_required
 def get_user(id):
@@ -53,7 +53,7 @@ def get_user(id):
     """
     return users_service.get_user(id)
 
-
+# update user
 @users.route('/<id>', methods=['PUT'])
 @login_required
 def put_user(id):
@@ -130,6 +130,7 @@ def put_user(id):
         error = SomethingWentWrongSchema().loads("{}")
         return error, error.get("code")
 
+# delete user
 @users.route('/<id>', methods=['DELETE'])
 @login_required
 def delete_user(id):
@@ -171,7 +172,7 @@ def delete_user(id):
     """
     return users_service.delete_user(id)
 
-
+# get all users
 @users.route('/', methods=['GET'])
 @login_required
 def get_users():
@@ -200,3 +201,37 @@ def get_users():
     """
     return users_service.get_users()
 
+# get all ratings for a user
+@users.route('/<id>/ratings', methods=['GET'])
+@login_required
+def get_ratings(id):
+    """
+    ---
+    get:
+      description: Getting all ratings for a user
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: uuidv4
+          required: true
+          description: UUID of user id
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: Ratings
+            application/yaml:
+              schema: Ratings
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema: Unauthorized
+            application/yaml:
+              schema: Unauthorized
+      tags:
+          - users
+    """
+    return users_service.get_user_ratings(id)

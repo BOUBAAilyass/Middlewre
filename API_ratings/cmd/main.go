@@ -13,7 +13,7 @@ import (
 func main() {
 
 	router := chi.NewRouter()
-	// comments------------------------------------------------------------------------------------------------------------------
+	// ratings------------------------------------------------------------------------------------------------------------------
 	router.Post("/ratings", ratings.InsertRating)
 	router.Get("/ratings", ratings.GetRatings)
 	router.Get("/ratings/{id}", ratings.GetRating)

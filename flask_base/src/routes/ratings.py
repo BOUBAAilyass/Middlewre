@@ -8,10 +8,10 @@ from schemas.rating import RatingUpdateSchema
 from schemas.errors import *
 import services.ratings as ratings_service
 
-# from routes import ratings  
+  
 ratings = Blueprint(name="ratings", import_name=__name__)
 
-
+# post rating
 @ratings.route('/', methods=['POST'])
 @login_required
 def post_rating():
@@ -52,6 +52,7 @@ def post_rating():
     print( "request.json")
     return ratings_service.create_rating(request.json)
 
+# get rating by id
 @ratings.route('/<id>', methods=['GET'])
 @login_required
 def get_rating(id):
@@ -94,6 +95,7 @@ def get_rating(id):
     """
     return ratings_service.get_rating(id)
 
+# update rating
 @ratings.route('/<id>', methods=['PUT'])
 @login_required
 def put_rating(id):
@@ -145,10 +147,9 @@ def put_rating(id):
       tags:
           - ratings
     """
-    print( "request.json")
-    print(request.json)
     return ratings_service.update_rating(id, request.json)
 
+# delete rating
 @ratings.route('/<id>', methods=['DELETE'])
 @login_required
 def delete_rating(id):
@@ -185,6 +186,7 @@ def delete_rating(id):
     """
     return ratings_service.delete_rating(id)
 
+# get all ratings
 @ratings.route('/', methods=['GET'])
 @login_required
 def get_ratings():

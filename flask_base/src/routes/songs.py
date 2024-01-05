@@ -8,10 +8,10 @@ from schemas.song import  SongUpdateSchema
 from schemas.errors import *
 import services.songs as songs_service
 
-# from routes import songs  
+
 songs = Blueprint(name="songs", import_name=__name__)
 
-
+# post song
 @songs.route('/', methods=['POST'])
 @login_required
 def post_song():
@@ -52,6 +52,7 @@ def post_song():
     print(request.json, "request.json")
     return songs_service.create_song(request.json)
 
+# get song by id
 @songs.route('/<id>', methods=['GET'])
 @login_required
 def get_song(id):
@@ -93,6 +94,7 @@ def get_song(id):
     """
     return songs_service.get_song(id)
 
+# update song 
 @songs.route('/<id>', methods=['PUT'])
 @login_required
 def put_song(id):
@@ -147,6 +149,7 @@ def put_song(id):
     print(request.json, "request.json")
     return songs_service.update_song(id, request.json)
 
+# delete song
 @songs.route('/<id>', methods=['DELETE'])
 @login_required
 def delete_song(id):
@@ -183,6 +186,7 @@ def delete_song(id):
     """
     return songs_service.delete_song(id)
 
+# get all songs
 @songs.route('/', methods=['GET'])
 @login_required
 def get_songs():
@@ -208,3 +212,82 @@ def get_songs():
               schema: Unauthorized
     """
     return songs_service.get_songs()
+
+# get all ratings for a song
+@songs.route('/<id>/ratings', methods=['GET'])
+def get_ratings(id):
+    """
+    ---
+    get:
+      description: Getting all ratings for a song
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: uuidv4
+          required: true
+          description: UUID of song id
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: Ratings
+            application/yaml:
+              schema: Ratings
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema: Unauthorized
+            application/yaml:
+              schema: Unauthorized
+    """
+    return songs_service.get_ratings(id)
+
+# create a rating for a song
+@songs.route('/<id>/ratings', methods=['POST'])
+def post_rating(id):
+    """
+    ---
+    post:
+      description: Creating a rating for a song
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: uuidv4
+          required: true
+          description: UUID of song id
+      requestBody:
+        required: true
+        content:
+            application/json:
+                schema: RatingCreate
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: Rating
+            application/yaml:
+              schema: Rating
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema: Unauthorized
+            application/yaml:
+              schema: Unauthorized
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema: UnprocessableEntity
+            application/yaml:
+              schema: UnprocessableEntity
+      tags:
+          - songs
+          - ratings
+    """
+    return songs_service.create_rating(id, request.json)

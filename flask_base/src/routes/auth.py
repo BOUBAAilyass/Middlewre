@@ -12,7 +12,7 @@ import services.auth as auth_service
 
 auth = Blueprint(name="login", import_name=__name__)
 
-
+#login
 @auth.route('/login', methods=['POST'])
 def login():
     """
@@ -77,7 +77,7 @@ def login():
     login_user(user, remember=True)
     return "", 200
 
-
+#logout
 @auth.route('/logout', methods=['POST'])
 @login_required
 def logout():
@@ -97,7 +97,7 @@ def logout():
     logout_user()
     return "", 200
 
-
+#register
 @auth.route('/register', methods=['POST'])
 def register():
     """
@@ -178,7 +178,7 @@ def register():
         error = SomethingWentWrongSchema().loads("{}")
         return error, error.get("code")
 
-
+#introspect
 @auth.route('/introspect', methods=["GET"])
 @login_required
 def introspect():

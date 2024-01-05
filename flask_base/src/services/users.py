@@ -8,7 +8,7 @@ from schemas.user import UserSchema
 from models.user import User as UserModel
 from models.http_exceptions import *
 import repositories.users as users_repository
-
+import services.ratings as ratings_service
 
 users_url = "http://localhost:8082/users"  # URL de l'API users (golang)
 
@@ -86,6 +86,11 @@ def user_exists(username):
     return get_user_from_db(username) is not None
 
 def delete_user(id):
+
+    print("id : ", id)
+    print("current_user.id : ", current_user.id)
+
+
     # on vérifie que l'utilisateur se modifie lui-même
     if id != current_user.id:
         raise Forbidden
@@ -93,17 +98,27 @@ def delete_user(id):
     # on lance la requête de suppression
     response = requests.request(method="DELETE", url=users_url+"/"+id)
 
-
-
-
-    if response.status_code != 200:
+    if response.status_code == 204:
+    # Pas de contenu, retourner une réponse vide ou un message approprié
+        # on supprime l'utilisateur de la base de données
+        users_repository.delete_user(id)
+        return "user supprimée avec succès", 204
+    else:
+    # Gérer la réponse avec du contenu
         return response.json(), response.status_code
     
-    # on supprime l'utilisateur de la base de données
-    users_repository.delete_user(id)
-
-    return response.json(), response.status_code
-
 def get_users():
     response = requests.request(method="GET", url=users_url)
     return response.json(), response.status_code
+
+# get ratings by user id
+def get_user_ratings(id):
+    ratings, status_code =  ratings_service.get_ratings()
+    if status_code != 200:
+        return ratings, status_code
+    
+    userRatings = []
+    for rating in ratings:
+        if rating["user_id"] == id:
+            userRatings.append(rating)
+    return userRatings, 200
