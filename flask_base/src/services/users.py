@@ -26,8 +26,6 @@ def create_user(user_register):
     print(user_schema)
     # on crée l'utilisateur côté API users
     response = requests.request(method="POST", url=users_url, json=user_schema)
-     
-    print(response.status_code)
 
     if response.status_code != 201:
         return response.json(), response.status_code
@@ -87,8 +85,6 @@ def user_exists(username):
 
 def delete_user(id):
 
-    print("id : ", id)
-    print("current_user.id : ", current_user.id)
 
 
     # on vérifie que l'utilisateur se modifie lui-même
@@ -99,7 +95,6 @@ def delete_user(id):
     response = requests.request(method="DELETE", url=users_url+"/"+id)
 
     if response.status_code == 204:
-    # Pas de contenu, retourner une réponse vide ou un message approprié
         # on supprime l'utilisateur de la base de données
         users_repository.delete_user(id)
         return "user supprimée avec succès", 204

@@ -7,6 +7,7 @@ from models.http_exceptions import *
 from schemas.song import  SongUpdateSchema
 from schemas.errors import *
 import services.songs as songs_service
+import services.ratings as ratings_service
 
 
 songs = Blueprint(name="songs", import_name=__name__)
@@ -291,3 +292,47 @@ def post_rating(id):
           - ratings
     """
     return songs_service.create_rating(id, request.json)
+
+# delete a rating for a song
+@songs.route('/<id>/ratings/<rating_id>', methods=['DELETE'])
+def delete_rating(id, rating_id):
+    """
+    ---
+    delete:
+      description: Deleting a rating for a song
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: uuidv4
+          required: true
+          description: UUID of song id
+        - in: path
+          name: rating_id
+          schema:
+            type: uuidv4
+          required: true
+          description: UUID of rating id
+      responses:
+        '204':
+          description: No content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema: Unauthorized
+            application/yaml:
+              schema: Unauthorized
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema: NotFound
+            application/yaml:
+              schema: NotFound
+      tags:
+          - songs
+          - ratings
+    """
+    return ratings_service.delete_rating(rating_id)
+

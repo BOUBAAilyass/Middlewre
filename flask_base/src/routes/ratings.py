@@ -186,6 +186,7 @@ def delete_rating(id):
     """
     return ratings_service.delete_rating(id)
 
+
 # get all ratings
 @ratings.route('/', methods=['GET'])
 @login_required

@@ -92,3 +92,5 @@ def create_rating(id, rating):
 
     return response.json(), response.status_code 
 
+
+
